@@ -1,7 +1,7 @@
 {
-  "name": "Soap Opera Commission",
-  "short_name": "Soap Opera",
-  "description": "Staff commission tracker",
+  "name": "Commission Tracker",
+  "short_name": "Commission",
+  "description": "Daily commission tracker",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",

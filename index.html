@@ -6,9 +6,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-<meta name="apple-mobile-web-app-title" content="Soap Opera" />
+<meta name="apple-mobile-web-app-title" content="Commission" />
 <meta name="theme-color" content="#f4f1ea" />
-<title>Soap Opera — Commission</title>
+<title>Commission</title>
 <link rel="manifest" href="manifest.webmanifest" />
 <link rel="apple-touch-icon" href="icons/icon-180.png" />
 <link rel="icon" type="image/png" href="icons/icon-192.png" />
@@ -27,8 +27,8 @@
 
   header{display:flex;align-items:center;justify-content:space-between;padding:10px 2px 18px}
   .brand{display:flex;align-items:center;gap:11px}
-  .mark{width:40px;height:40px;border-radius:12px;background:var(--ink);color:#f3efe7;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600;font-size:22px;position:relative}
-  .mark::after{content:"";position:absolute;inset:7px;border:1px solid rgba(243,239,231,.5);border-radius:50%}
+  .mark{width:42px;height:42px;border-radius:50%;background:var(--ink);color:#f3efe7;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600;font-size:22px;position:relative;overflow:hidden}
+  .mark img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .brand .t{line-height:1.15}
   .brand .t b{font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:.01em}
   .brand .t span{display:block;font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.16em}
@@ -187,8 +187,8 @@
 <div class="wrap">
   <header>
     <div class="brand">
-      <div class="mark">฿</div>
-      <div class="t"><b>Soap Opera</b><span>Staff commission</span></div>
+      <div class="mark"><img id="brandImg" src="logo.jpg" alt="" onerror="this.remove()" />฿</div>
+      <div class="t"><b>Commission</b><span>Daily tracker</span></div>
     </div>
     <button class="icon-btn" id="settingsBtn" aria-label="Settings">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.1"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -361,13 +361,17 @@
   function todayStr(d){d=d||new Date();return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
   function parseDate(s){const p=String(s).split("-");return new Date(+p[0],(+p[1])-1,+p[2]);}
   function money(n){n=Number(n)||0;const v=Math.round((n+Number.EPSILON)*100)/100;return cfg.cur+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
-  function moneyShort(n){n=Number(n)||0;if(Math.abs(n)>=1000)return cfg.cur+(n/1000).toFixed(n>=100000?0:1).replace(/\.0$/,"")+"k";return cfg.cur+(Math.round(n*100)/100).toLocaleString(undefined,{maximumFractionDigits:2});}
+  function moneyShort(n){n=Number(n)||0;const a=Math.abs(n);
+    if(a>=1e6)return cfg.cur+(n/1e6).toFixed(a>=1e7?1:2).replace(/\.?0+$/,"")+"M";
+    if(a>=1000)return cfg.cur+(n/1000).toFixed(a>=1e5?0:1).replace(/\.0$/,"")+"k";
+    return cfg.cur+(Math.round(n*100)/100).toLocaleString(undefined,{maximumFractionDigits:2});}
   function weekStart(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return x;}
   function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x;}
   function inRange(ds,start,end){const t=parseDate(ds).getTime();return t>=start.getTime()&&t<end.getTime();}
   function sumComm(f){return entries.reduce((a,e)=>f(e)?a+(Number(e.comm)||0):a,0);}
   function sumSale(f){return entries.reduce((a,e)=>f(e)?a+(Number(e.sale)||0):a,0);}
   function escapeHtml(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+  function debounce(fn,ms){let t;return function(){clearTimeout(t);t=setTimeout(fn,ms);};}
   function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),1700);}
 
   /* render: stats + compare */
@@ -442,9 +446,13 @@
     if(entries.length===0){listEl.innerHTML='<div class="xls-empty">No sales recorded yet.<br>Add your first sale from the Record tab.</div>';return;}
     const rowsData=applyFilterSort();
     const best=topDay(rowsData);
-    let totSale=0,totComm=0,rows="";
-    rowsData.forEach((e,idx)=>{
-      totSale+=Number(e.sale)||0;totComm+=Number(e.comm)||0;
+    let totSale=0,totComm=0;
+    for(let i=0;i<rowsData.length;i++){totSale+=Number(rowsData[i].sale)||0;totComm+=Number(rowsData[i].comm)||0;}
+    const n=rowsData.length, avg=n?totSale/n:0;
+    const CAP=400;
+    const shown=n>CAP?rowsData.slice(0,CAP):rowsData;
+    let rows="";
+    shown.forEach((e,idx)=>{
       rows+=`<tr class="rrow" data-id="${escapeHtml(e.id)}">
         <td class="rn">${idx+1}</td>
         <td>${shortDate(e.date)}</td>
@@ -454,8 +462,7 @@
         <td class="act"><span class="x" data-id="${escapeHtml(e.id)}" aria-label="Delete">✕</span></td>
       </tr>`;
     });
-    if(rowsData.length===0)rows='<tr><td colspan="6" class="xls-empty" style="border:0">No records match these filters.</td></tr>';
-    const n=rowsData.length, avg=n?totSale/n:0;
+    if(n===0)rows='<tr><td colspan="6" class="xls-empty" style="border:0">No records match these filters.</td></tr>';
     const car=k=>sortKey===k?`<span class="car">${sortDir==="asc"?"▲":"▼"}</span>`:"";
     listEl.innerHTML=`
       <div class="xls-sum">
@@ -478,7 +485,7 @@
         <tbody>${rows}</tbody>
         <tfoot><tr><td class="rn"></td><td>Total</td><td class="num">${money(totSale)}</td><td class="comm">${money(totComm)}</td><td></td><td class="act"></td></tr></tfoot>
       </table></div>
-      <div class="edithint">Tap any row to edit · tap ✕ to delete</div>`;
+      <div class="edithint">${n>CAP?("Showing first "+CAP+" of "+n+" — narrow with search or filters"):"Tap any row to edit · tap ✕ to delete"}</div>`;
     listEl.querySelectorAll(".rrow").forEach(tr=>tr.addEventListener("click",()=>openEdit(tr.dataset.id)));
     listEl.querySelectorAll(".x").forEach(b=>b.addEventListener("click",ev=>{ev.stopPropagation();del(b.dataset.id);}));
     listEl.querySelectorAll("th.sortable").forEach(th=>th.addEventListener("click",()=>{
@@ -593,8 +600,9 @@
   }));
   $("#fromDate").addEventListener("change",()=>{fFrom=$("#fromDate").value;renderRecords();});
   $("#toDate").addEventListener("change",()=>{fTo=$("#toDate").value;renderRecords();});
-  $("#searchNote").addEventListener("input",()=>{fSearch=$("#searchNote").value.trim().toLowerCase();renderRecords();});
-  $("#minAmt").addEventListener("input",()=>{fMin=parseFloat($("#minAmt").value)||0;renderRecords();});
+  const rrDeb=debounce(renderRecords,140);
+  $("#searchNote").addEventListener("input",()=>{fSearch=$("#searchNote").value.trim().toLowerCase();rrDeb();});
+  $("#minAmt").addEventListener("input",()=>{fMin=parseFloat($("#minAmt").value)||0;rrDeb();});
   $("#clearFilters").addEventListener("click",()=>{
     fRange="all";fMin=0;fSearch="";fFrom="";fTo="";sortKey="date";sortDir="desc";
     $("#minAmt").value="";$("#searchNote").value="";$("#fromDate").value="";$("#toDate").value="";
