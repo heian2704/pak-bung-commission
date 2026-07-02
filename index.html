@@ -6,18 +6,19 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-<meta name="apple-mobile-web-app-title" content="Pak Bung" />
-<meta name="theme-color" content="#ffffff" />
-<title>Pak Bung Commission</title>
+<meta name="apple-mobile-web-app-title" content="Soap Opera" />
+<meta name="theme-color" content="#f4f1ea" />
+<title>Soap Opera — Commission</title>
 <link rel="manifest" href="manifest.webmanifest" />
 <link rel="apple-touch-icon" href="icons/icon-180.png" />
 <link rel="icon" type="image/png" href="icons/icon-192.png" />
 <style>
   :root{
-    --bg:#f4f5f7;--card:#ffffff;--line:#e7e9ee;--line2:#dfe2e8;--txt:#141821;--txt2:#3d4657;
-    --muted:#7b8496;--faint:#aab1bf;--accent:#0f9d6f;--accent-d:#0b7d58;--accent-soft:#e7f6ef;
-    --up:#0f9d6f;--down:#e2504b;--up-soft:#e7f6ef;--down-soft:#fdeceb;--fieldbg:#f7f8fa;
-    --shadow:0 1px 2px rgba(20,24,33,.04), 0 2px 8px rgba(20,24,33,.05);--radius:16px;
+    --bg:#f4f1ea;--card:#ffffff;--line:#ece7dd;--line2:#e1dbce;--ink:#211f1b;--txt:#211f1b;--txt2:#4a463e;
+    --muted:#8b857a;--faint:#b4ad9f;--accent:#2f6f52;--accent-d:#255a42;--accent-soft:#e7efe9;
+    --up:#2f6f52;--down:#b1483f;--up-soft:#e7efe9;--down-soft:#f6e7e4;--fieldbg:#f7f5f0;
+    --shadow:0 1px 2px rgba(33,31,27,.05), 0 2px 10px rgba(33,31,27,.06);--radius:16px;
+    --serif:"Didot","Bodoni 72","Hoefler Text",Georgia,"Times New Roman",serif;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
@@ -26,12 +27,14 @@
 
   header{display:flex;align-items:center;justify-content:space-between;padding:10px 2px 18px}
   .brand{display:flex;align-items:center;gap:11px}
-  .mark{width:36px;height:36px;border-radius:11px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:19px}
-  .brand .t{line-height:1.1}
-  .brand .t b{font-size:18px;font-weight:650;letter-spacing:-.02em}
-  .brand .t span{display:block;font-size:12px;color:var(--muted);margin-top:1px}
-  .icon-btn{background:var(--card);border:1px solid var(--line);color:var(--txt2);width:40px;height:40px;border-radius:11px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow)}
+  .mark{width:40px;height:40px;border-radius:12px;background:var(--ink);color:#f3efe7;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600;font-size:22px;position:relative}
+  .mark::after{content:"";position:absolute;inset:7px;border:1px solid rgba(243,239,231,.5);border-radius:50%}
+  .brand .t{line-height:1.15}
+  .brand .t b{font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:.01em}
+  .brand .t span{display:block;font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.16em}
+  .icon-btn{background:var(--card);border:1px solid var(--line);color:var(--txt2);width:42px;height:42px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow)}
   .icon-btn:active{transform:scale(.95)}
+  .icon-btn svg{width:20px;height:20px}
 
   .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;margin-bottom:10px}
   .card h2{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:0 0 14px}
@@ -51,11 +54,15 @@
   .preview .lbl{color:var(--muted);font-size:13.5px;font-weight:500}
   .preview .val{font-size:26px;font-weight:750;color:var(--accent);letter-spacing:-.02em}
 
-  .btn{width:100%;border:none;border-radius:13px;padding:15px;font-size:16px;font-weight:650;cursor:pointer;color:#fff;background:var(--accent);margin-top:14px;transition:background .15s,transform .05s;box-shadow:0 1px 2px rgba(15,157,111,.25)}
-  .btn:active{transform:scale(.985);background:var(--accent-d)}
-  .btn:disabled{opacity:.6;cursor:default}
+  .btn{width:100%;border:none;border-radius:13px;padding:15px;font-size:16px;font-weight:650;cursor:pointer;color:#fff;background:var(--ink);margin-top:14px;transition:background .15s,transform .05s;box-shadow:0 1px 2px rgba(33,31,27,.22)}
+  .btn:active{transform:scale(.985);background:#000}
+  .btn:disabled{opacity:.55;cursor:default}
   .btn.secondary{background:var(--card);color:var(--txt2);border:1px solid var(--line2);box-shadow:none}
   .btn.danger{background:var(--card);color:var(--down);border:1px solid var(--line2);box-shadow:none}
+  .btn.danger-solid{background:var(--down);color:#fff;border:none;box-shadow:0 1px 2px rgba(177,72,63,.25)}
+  .btn.danger-solid:active{background:#93382f}
+  .btn.icon-left{display:flex;align-items:center;justify-content:center;gap:8px}
+  .btn.icon-left svg{width:18px;height:18px;flex:0 0 auto}
 
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
   .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 12px;box-shadow:var(--shadow)}
@@ -89,7 +96,7 @@
   .chips{display:flex;gap:7px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:3px;margin-bottom:9px}
   .chips::-webkit-scrollbar{display:none}
   .chip{flex:0 0 auto;background:var(--fieldbg);border:1px solid var(--line2);color:var(--txt2);font-size:12.5px;font-weight:550;padding:7px 13px;border-radius:999px;cursor:pointer;transition:.12s}
-  .chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  .chip.active{background:var(--ink);border-color:var(--ink);color:#fff}
   .frow{display:flex;gap:8px;align-items:center;margin-bottom:8px}
   .frow:last-child{margin-bottom:0}
   .inp.sm{padding:9px 12px;font-size:14px;flex:1}
@@ -127,7 +134,7 @@
   .tabs{position:fixed;left:0;right:0;bottom:0;display:flex;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:7px 8px calc(7px + env(safe-area-inset-bottom));z-index:20}
   .tab{flex:1;background:none;border:none;color:var(--muted);font-size:11px;padding:6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:600;border-radius:10px;transition:color .15s}
   .tab svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-  .tab.active{color:var(--accent)}
+  .tab.active{color:var(--ink)}
   .view{display:none;animation:fade .2s ease}
   .view.active{display:block}
   @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
@@ -162,6 +169,18 @@
 
   .toast{position:fixed;bottom:82px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--txt);color:#fff;font-weight:600;padding:11px 20px;border-radius:999px;opacity:0;transition:.22s;z-index:80;font-size:13.5px;box-shadow:0 6px 20px rgba(20,24,33,.25);pointer-events:none;max-width:90vw;text-align:center}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .dataline{font-size:12.5px;color:var(--muted);text-align:center;margin:16px 0 2px}
+  .modal.center{align-items:center;padding:20px}
+  #confirmModal{z-index:70}
+  .dialog{background:var(--card);border-radius:18px;width:100%;max-width:330px;padding:22px 20px;text-align:center;box-shadow:0 20px 50px rgba(33,31,27,.28);animation:pop .18s ease}
+  @keyframes pop{from{transform:scale(.94);opacity:.5}to{transform:none;opacity:1}}
+  .dialog-ico{width:48px;height:48px;border-radius:50%;background:var(--down-soft);color:var(--down);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+  .dialog-ico svg{width:23px;height:23px}
+  .dialog h3{margin:0 0 6px;font-size:17px;font-weight:700}
+  .dialog p{margin:0 0 18px;color:var(--muted);font-size:13.5px;line-height:1.45}
+  .dialog-actions{display:flex;gap:10px}
+  .dialog-actions .btn{margin-top:0}
 </style>
 </head>
 <body>
@@ -169,9 +188,11 @@
   <header>
     <div class="brand">
       <div class="mark">฿</div>
-      <div class="t"><b>Commission</b><span>Daily tracker</span></div>
+      <div class="t"><b>Soap Opera</b><span>Staff commission</span></div>
     </div>
-    <button class="icon-btn" id="settingsBtn" aria-label="Settings">⚙</button>
+    <button class="icon-btn" id="settingsBtn" aria-label="Settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.1"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
   </header>
 
   <!-- RECORD VIEW -->
@@ -257,10 +278,11 @@
     <p class="sub">Your records are saved privately on this device.</p>
     <div class="field" style="margin-bottom:14px"><label>Default commission rate %</label><input id="setRate" class="inp" type="number" inputmode="decimal" step="0.1" /></div>
     <div class="field"><label>Currency symbol</label><input id="setCur" class="inp" type="text" maxlength="3" /></div>
-    <div class="seg"><span class="muted" id="dataInfo">—</span><button class="link" id="exportBtn">Export CSV</button></div>
+    <div class="dataline" id="dataInfo">—</div>
     <button class="btn" id="saveSettings">Save changes</button>
-    <button class="btn secondary" id="installBtn2">📲 Install app on phone</button>
-    <button class="btn danger" id="clearAll">Clear all data</button>
+    <button class="btn secondary icon-left" id="exportBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg> Export to CSV</button>
+    <button class="btn secondary icon-left" id="installBtn2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.2"/><path d="M11 18h2"/></svg> Install app on phone</button>
+    <button class="btn danger icon-left" id="clearAll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2"/><path d="M6 7l1 13a1 1 0 001 1h8a1 1 0 001-1l1-13"/></svg> Clear all data</button>
     <button class="btn secondary" id="closeSettings" style="margin-top:8px">Close</button>
   </div>
 </div>
@@ -292,9 +314,22 @@
     <ol class="ios-steps">
       <li><span class="n">1</span><div>Tap the <b>Share</b> button <span class="shareico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 12H5a1 1 0 00-1 1v7a1 1 0 001 1h14a1 1 0 001-1v-7a1 1 0 00-1-1h-1"/></svg></span> at the bottom of Safari.</div></li>
       <li><span class="n">2</span><div>Scroll down and tap <b>Add to Home Screen</b>.</div></li>
-      <li><span class="n">3</span><div>Tap <b>Add</b> — the green ฿ icon appears on your home screen.</div></li>
+      <li><span class="n">3</span><div>Tap <b>Add</b> — the ฿ icon appears on your home screen.</div></li>
     </ol>
     <button class="btn secondary" id="iosHelpClose">Got it</button>
+  </div>
+</div>
+
+<!-- Confirm dialog -->
+<div class="modal center" id="confirmModal">
+  <div class="dialog">
+    <div class="dialog-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2"/><path d="M6 7l1 13a1 1 0 001 1h8a1 1 0 001-1l1-13"/></svg></div>
+    <h3 id="confirmTitle">Delete this record?</h3>
+    <p id="confirmMsg">This can’t be undone.</p>
+    <div class="dialog-actions">
+      <button class="btn secondary" id="confirmCancel">Cancel</button>
+      <button class="btn danger-solid" id="confirmOk">Delete</button>
+    </div>
   </div>
 </div>
 
@@ -470,7 +505,13 @@
     $("#saleInput").value="";$("#noteInput").value="";updatePreview();
     renderAll();toast("Sale recorded");$("#saleInput").focus();
   }
-  function del(id){entries=entries.filter(e=>e.id!==id);saveEntries();renderAll();toast("Deleted");}
+  function del(id){
+    const e=entries.find(x=>x.id===id);
+    const detail=e?(money(e.sale)+" on "+shortDate(e.date)):"";
+    askConfirm("Delete this record?", detail?(detail+" — this can’t be undone."):"This can’t be undone.","Delete",()=>{
+      entries=entries.filter(x=>x.id!==id);saveEntries();renderAll();toast("Deleted");
+    });
+  }
 
   /* edit */
   function openEdit(id){
@@ -517,7 +558,12 @@
     $("#curSign").textContent=cfg.cur;$("#rateInput").value=cfg.rate;
     updatePreview();renderAll();$("#settingsModal").classList.remove("open");toast("Settings saved");
   });
-  $("#clearAll").addEventListener("click",()=>{if(confirm("Delete ALL records on this device? This cannot be undone.")){entries=[];saveEntries();renderAll();openSettings();toast("All data cleared");}});
+  $("#clearAll").addEventListener("click",()=>{
+    if(entries.length===0){toast("No records to clear");return;}
+    askConfirm("Clear ALL records?","This permanently deletes all "+entries.length+" record"+(entries.length===1?"":"s")+" on this device.","Delete all",()=>{
+      entries=[];saveEntries();renderAll();openSettings();toast("All data cleared");
+    });
+  });
   $("#exportBtn").addEventListener("click",()=>{
     if(entries.length===0){toast("Nothing to export");return;}
     const rows=[["date","sale","rate","commission","note"]].concat(entries.slice().sort((a,b)=>a.date<b.date?-1:1).map(e=>[e.date,e.sale,e.rate,e.comm,'"'+String(e.note||"").replace(/"/g,'""')+'"']));
@@ -577,6 +623,17 @@
   $("#installBtn2").addEventListener("click",()=>{$("#settingsModal").classList.remove("open");triggerInstall();});
   $("#iosHelpClose").addEventListener("click",()=>$("#iosHelp").classList.remove("open"));
   $("#iosHelp").addEventListener("click",e=>{if(e.target===$("#iosHelp"))$("#iosHelp").classList.remove("open");});
+
+  /* confirm dialog */
+  let confirmCb=null;
+  function askConfirm(title,msg,okLabel,cb){
+    $("#confirmTitle").textContent=title;$("#confirmMsg").textContent=msg;$("#confirmOk").textContent=okLabel||"Delete";
+    confirmCb=cb;$("#confirmModal").classList.add("open");
+  }
+  function closeConfirm(){$("#confirmModal").classList.remove("open");confirmCb=null;}
+  $("#confirmCancel").addEventListener("click",closeConfirm);
+  $("#confirmModal").addEventListener("click",e=>{if(e.target===$("#confirmModal"))closeConfirm();});
+  $("#confirmOk").addEventListener("click",()=>{const cb=confirmCb;closeConfirm();if(cb)cb();});
 
   /* init */
   load();
