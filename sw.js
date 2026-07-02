@@ -1,9 +1,8 @@
-const CACHE = "pakbung-v2";
+const CACHE = "pakbung-v3";
 const ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
-  "./vendor/supabase.js",
   "./icons/icon-180.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png"
