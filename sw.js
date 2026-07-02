@@ -1,8 +1,9 @@
-const CACHE = "pakbung-v4";
+const CACHE = "pakbung-v6";
 const ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
+  "./logo.jpg",
   "./icons/icon-180.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png"
@@ -25,15 +26,14 @@ self.addEventListener("fetch", e => {
   if (req.method !== "GET") return;
 
   const url = new URL(req.url);
-  // Never touch cross-origin requests (e.g. Supabase API/auth) — always live network.
+  // Never touch cross-origin requests — always live network.
   if (url.origin !== self.location.origin) return;
 
   // Network-first for page navigations so updates show; fall back to cache offline.
   if (req.mode === "navigate") {
     e.respondWith(
       fetch(req).then(res => {
-        const copy = res.clone();
-        caches.open(CACHE).then(c => c.put("./index.html", copy));
+        if (res && res.ok) { const copy = res.clone(); caches.open(CACHE).then(c => c.put("./index.html", copy)); }
         return res;
       }).catch(() => caches.match("./index.html"))
     );
@@ -43,8 +43,7 @@ self.addEventListener("fetch", e => {
   // Cache-first for same-origin static assets.
   e.respondWith(
     caches.match(req).then(hit => hit || fetch(req).then(res => {
-      const copy = res.clone();
-      caches.open(CACHE).then(c => c.put(req, copy));
+      if (res && res.ok) { const copy = res.clone(); caches.open(CACHE).then(c => c.put(req, copy)); }
       return res;
     }))
   );
