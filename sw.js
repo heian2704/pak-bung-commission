@@ -1,4 +1,4 @@
-const CACHE = "pakbung-v8";
+const CACHE = "pakbung-v9";
 const ASSETS = [
   "./",
   "./index.html",

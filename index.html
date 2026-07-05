@@ -213,6 +213,8 @@
   .bhrow .tick{font-size:13px;font-weight:700;white-space:nowrap}
   .bhrow .tick.y{color:var(--accent)}
   .bhrow .tick.n{color:var(--faint)}
+  .bmore{display:block;width:100%;margin-top:8px;background:none;border:0;border-top:1px solid var(--line);color:var(--accent-d);font-weight:700;font-size:13px;padding:11px 8px 3px;cursor:pointer;text-align:center}
+  .bmore:active{opacity:.55}
 </style>
 </head>
 <body>
@@ -709,6 +711,8 @@
   /* ---- Branch bonus: OWN storage key (ct_branch_v1). Does NOT touch entries/cfg. ---- */
   const LS_BRANCH="ct_branch_v1";
   let branch={days:{},target:500000,bonus:1500};
+  let bDaysExpanded=false, bHistExpanded=false;
+  const B_MAX=5;
   function loadBranch(){
     try{
       const raw=JSON.parse(localStorage.getItem(LS_BRANCH)||"{}");
@@ -744,14 +748,21 @@
     const days=Object.keys(branch.days).filter(k=>k.slice(0,7)===mk).sort().reverse();
     let dl="";
     if(days.length===0)dl='<div class="bempty">No days recorded this month yet.</div>';
-    else days.forEach(k=>{dl+='<div class="bday" data-d="'+escapeHtml(k)+'"><span class="d">'+shortDate(k)+'</span><span class="a">'+money0(branch.days[k])+'</span><span class="x" data-d="'+escapeHtml(k)+'" aria-label="Delete">✕</span></div>';});
+    else{
+      (bDaysExpanded?days:days.slice(0,B_MAX)).forEach(k=>{dl+='<div class="bday" data-d="'+escapeHtml(k)+'"><span class="d">'+shortDate(k)+'</span><span class="a">'+money0(branch.days[k])+'</span><span class="x" data-d="'+escapeHtml(k)+'" aria-label="Delete">✕</span></div>';});
+      if(days.length>B_MAX)dl+='<button type="button" class="bmore" data-more="days">'+(bDaysExpanded?"Show less":("Show all "+days.length+" days"))+'</button>';
+    }
     $("#bDayList").innerHTML=dl;
     const mks={};for(const k in branch.days){const m=k.slice(0,7);mks[m]=(mks[m]||0)+(Number(branch.days[k])||0);}
     const months=Object.keys(mks).sort().reverse();
-    let hh="",earned=0;
-    months.forEach(m=>{const tot=mks[m];const ok=target>0&&tot>=target;if(ok)earned++;hh+='<div class="bhrow"><div><div class="m">'+bMonthLabel(m)+'</div><div class="s">'+money0(tot)+' / '+money0(target)+'</div></div><span class="tick '+(ok?"y":"n")+'">'+(ok?("✓ "+money0(bonus)):"—")+'</span></div>';});
+    let earned=0;months.forEach(m=>{if(target>0&&mks[m]>=target)earned++;});
+    let hh="";
     if(months.length===0)hh='<div class="bempty">No history yet.</div>';
-    else hh+='<div class="dataline" style="margin-top:12px">Bonuses earned: '+earned+' × '+money0(bonus)+' = '+money0(earned*bonus)+'</div>';
+    else{
+      (bHistExpanded?months:months.slice(0,B_MAX)).forEach(m=>{const tot=mks[m];const ok=target>0&&tot>=target;hh+='<div class="bhrow"><div><div class="m">'+bMonthLabel(m)+'</div><div class="s">'+money0(tot)+' / '+money0(target)+'</div></div><span class="tick '+(ok?"y":"n")+'">'+(ok?("✓ "+money0(bonus)):"—")+'</span></div>';});
+      if(months.length>B_MAX)hh+='<button type="button" class="bmore" data-more="hist">'+(bHistExpanded?"Show less":("Show all "+months.length+" months"))+'</button>';
+      hh+='<div class="dataline" style="margin-top:12px">Bonuses earned: '+earned+' × '+money0(bonus)+' = '+money0(earned*bonus)+'</div>';
+    }
     $("#bHistory").innerHTML=hh;
     if(document.activeElement!==$("#bSetTarget"))$("#bSetTarget").value=target;
     if(document.activeElement!==$("#bSetBonus"))$("#bSetBonus").value=bonus;
@@ -781,6 +792,11 @@
   },400);
   $("#bSetTarget").addEventListener("input",bSetSave);
   $("#bSetBonus").addEventListener("input",bSetSave);
+  document.addEventListener("click",e=>{
+    const b=e.target.closest(".bmore");if(!b)return;
+    if(b.dataset.more==="days")bDaysExpanded=!bDaysExpanded;else if(b.dataset.more==="hist")bHistExpanded=!bHistExpanded;
+    renderBonus();
+  });
 
   /* confirm dialog */
   let confirmCb=null;
